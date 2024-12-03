@@ -106,6 +106,8 @@ Below is a histogram of cooking times. The histogram visualizes the distribution
   frameborder="0"
 ></iframe>
 
+---
+
 Below is a scatterplot of cooking time and average recipe ratings. The scatterplot shows the relationship between cooking time and average recipe ratings. While there is no strong correlation, recipes with shorter cooking times appear to have a dense concentration of high ratings, suggesting that quick recipes are more common  among users. Longer cooking times do not seem to significantly impact ratings but are less common. There appear to be lines around 1, 2, 3, 4, and 5 since many recipes have only one rating, which results in a whole number average rating.
 
 <iframe
