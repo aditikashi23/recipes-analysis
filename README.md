@@ -115,6 +115,16 @@ Below is a scatterplot of cooking time and average recipe ratings. The scatterpl
   frameborder="0"
 ></iframe>
 
+Below is a grouped table of cooking time and average rating. This is helpful to our analysis because it helps visualize how the average rating changes as the cooking time increases. There doesn't appear to be much of a change until the "Over 5 hours" category, where there is a drop from 4.62 to 4.52. This could be simply because there are less recipes in that cooking time range.
+
+| cooking_time_range     |   average_rating |
+|:------------|--------:|
+| 0-10 min   |        4.69 |
+| 10-30 min  |      4.63|
+| 30-60 min  |       4.61 |
+| 1-2 hrs    |        4.63|
+| 2-5 hrs    |      4.62|
+| Over 5 hrs    |     4.52|
 
 
 ---
