@@ -131,16 +131,60 @@ Below is a grouped table of cooking time and average rating. This is helpful to 
 
 ## Framing a Prediction Problem
 
-Here's what a Markdown table looks like. Note that the code for this table was generated _automatically_ from a DataFrame, using
+The prediction problem is a regression task, where the goal is to predict the cooking time (minutes) for a recipe based on other numerical features, such as the number of steps and the number of ingredients. Regression is appropriate because the response variable is continuous, representing time in minutes.
 
-```py
-print(counts[['Quarter', 'Count']].head().to_markdown(index=False))
-```
+Response Variable: minutes
+Reason for Choosing It: Cooking time is a critical aspect of a recipe, influencing its practicality and appeal. Predicting it based on recipe complexity and ingredients can offer valuable insights to home cooks or recipe platforms.
 
+Chosen Metric: R² (Coefficient of Determination)
+Reason: R² evaluates how well the independent variables (features) explain the variance in the dependent variable (response). This makes it ideal for regression tasks where the aim is to maximize the proportion of variance explained by the model.
+A high R² value indicates a good fit, meaning the model accurately predicts cooking time for a range of recipes.
+
+Why Not Other Metrics?
+Mean Squared Error (MSE):
+While MSE is useful to measure error magnitude, it is not intuitive for interpreting model performance since it is sensitive to scale.
+Mean Absolute Error (MAE):
+MAE measures average prediction error, but it does not provide insight into how well the model captures variance in the target variable.
+Adjusted R²:
+Adjusted R² accounts for the number of predictors but is more relevant when adding numerous features. With a smaller feature set, standard R² suffices.
+
+Selected Features
+Number of Steps (n_steps):
+Why It's Known: The number of steps is part of the recipe design, which is available before cooking starts. It does not depend on the outcome or performance of the recipe and is static information available during recipe submission or retrieval.
+Number of Ingredients (n_ingredients):
+Why It's Known: The ingredient count is derived from the recipe's ingredient list, which is also finalized and available before cooking begins. This information is inherently part of the recipe structure.
 
 ---
 
 ## Baseline Model
+
+The baseline model is a **Linear Regression** model implemented using the `LinearRegression` class from `sklearn`. It was chosen because it provides a straightforward method to evaluate the linear relationship between the selected features and the target variable, `minutes`.
+
+### **Features in the Model**
+1. **Quantitative Features (2)**:
+   - **`n_steps`**: Represents the number of steps in a recipe, inherently numerical and continuous.
+   - **`n_ingredients`**: Denotes the number of ingredients used in the recipe, also a numerical and continuous feature.
+
+2. **Ordinal Features**: None.
+
+3. **Nominal Features**: None.
+
+4. **Encodings and Transformations**:
+   - No encoding was required since all features were quantitative.
+   - No scaling or normalization was applied because scaling has no effect on predictions for a simple linear regression model.
+
+### **Model Performance**
+1. **Training R² Score**: **0.0419**
+   - Indicates that the model explains only 4.19% of the variance in the training data.
+   
+2. **Testing R² Score**: **0.0397**
+   - Shows that the model performs similarly on unseen data, explaining 3.97% of the variance.
+
+3. **Predictions**: The model’s predictions are close to the mean of the `minutes` column, indicating a limited ability to capture relationships between features and the target.
+
+### **Evaluation of Model Quality**
+- **Is the Model "Good"?**
+  - No, the current model is not good. A low R² score suggests that the model fails to explain the variability in the cooking time (`minutes`). This implies that `n_steps` and `n_ingredients` alone are insufficient to predict the target variable effectively.
 
 
 ---
