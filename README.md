@@ -16,38 +16,27 @@ This question is relevant to both recipe creators and home cooks. For creators, 
 
 There are 82909 rows and 13 columns in this dataset, after merging the recipes and review datasets together. 
 
-The column and descriptions for the recipes dataset are as follows:
+The column and descriptions for the relevant columns of the recipes dataset are as follows:
 
 
 | Column     |   Description |
 |:------------|--------:|
-| name   |       Recipe name |
-| id |       Recipe ID |
 | minutes |       Minutes to prepare recipe |
-| contributor_id |       User ID who submitted this recipe |
-| submitted   |      Date recipe was submitted |
-| tags   |       Food.com tags for recipe |
 | nutrition |       Nutrition information in the form [calories (#), total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat (PDV), carbohydrates (PDV)]; PDV stands for “percentage of daily value” |
 | n_steps |       Number of steps in recipe |
-| steps |       Text for recipe steps, in order |
-| description   |      User-provided description |
 
 The column and descriptions for the reviews dataset are as follows:
 
 | Column     |   Description |
 |:------------|--------:|
-| user_id   |       User ID |
-| recipe_id |       Recipe ID |
-| date |       Date of interaction |
 | rating |       Rating given |
-| review   |      Review text |
 
 
 ---
 
 ## Data Cleaning and Exploratory Data Analysis
 
-Step 1: Left merge the recipes and interactions datasets
+ ** Step 1: Left merge the recipes and interactions datasets **
 
 Process: The recipes dataset, containing information about recipes (e.g., ingredients, cooking times), was merged with the interactions dataset, which stores user feedback such as ratings and comments. The merge was performed using a left join on id (recipe identifier) in recipes and recipe_id in interactions. This ensured all recipes were retained, even if they had no associated interactions.
 
@@ -55,7 +44,7 @@ Rationale: This step aligned user-generated interactions with their correspondin
 
 Impact: Recipes without user interactions had missing values for ratings. This step created a unified dataset that combined recipe attributes and user feedback, making it easier to analyze the relationship between recipe features and ratings.
 
-Step 2: Fill all ratings of 0 with np.nan
+** Step 2: Fill all ratings of 0 with np.nan **
 
 Process: Ratings of 0 in the dataset were replaced with np.nan.
 
@@ -63,7 +52,7 @@ Rationale: A rating of 0 likely indicated missing or invalid data rather than an
 
 Impact: This step prevented erroneous ratings from skewing the analysis, particularly when calculating average ratings. Treating these values as missing ensured a more accurate representation of user feedback.
 
-Step 3: Find the average rating per recipe
+** Step 3: Find the average rating per recipe **
 
 Process: The average rating for each recipe was calculated by grouping the merged dataset by id (recipe identifier) and taking the mean of the rating column.
 
@@ -71,7 +60,7 @@ Rationale: Recipes can have multiple ratings from different users. Computing an 
 
 Impact: The aggregated rating simplified downstream analysis and allowed for easier comparisons between recipes based on user feedback.
 
-Step 4: Add the average rating back to the recipes dataset
+** Step 4: Add the average rating back to the recipes dataset **
 
 Process: The calculated average ratings were merged back into the recipes dataset as a new column, average_rating. A left join ensured all recipes were included, even those without ratings.
 
@@ -79,7 +68,7 @@ Rationale: This integration enriched the recipes dataset with user feedback whil
 
 Impact: Recipes with no ratings had NaN in the average_rating column. Including average ratings in the recipes dataset made it easier to analyze how recipe features (e.g., cooking time, ingredients) influenced user satisfaction.
 
-Step 5: Remove recipes with cook times greater than six months
+** Step 5: Remove recipes with cook times greater than six months **
 
 Process: Recipes with cooking times (minutes) greater than 720 (equivalent to six months) were removed from the dataset.
 
@@ -87,15 +76,23 @@ Rationale: Extremely high cooking times are likely outliers or data entry errors
 
 Impact: This step ensured a more realistic dataset, free from implausible outliers. It improved the quality of analyses by focusing on recipes that users are more likely to attempt and rate.
 
-Here are the first five rows of the dataset post-cleaning:
+** Step 6: Modify the nutrition column to extract all values into individual columns**
 
-| name                                 |     id |   minutes |   contributor_id | submitted   | tags                                                                                                    | nutrition                                     |   n_steps | steps                                                                                                   | description                                                                                             | ingredients                                                                                             |   n_ingredients |   average_rating |
-|:-------------------------------------|-------:|----------:|-----------------:|:------------|:--------------------------------------------------------------------------------------------------------|:----------------------------------------------|----------:|:--------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------|----------------:|-----------------:|
-| 1 brownies in the world    best ever | 333281 |        40 |           985201 | 2008-10-27  | ['60-minutes-or-less', 'time-to-make', 'course', 'main-ingredient', 'preparation', 'for-large-groups... | [138.4, 10.0, 50.0, 3.0, 3.0, 19.0, 6.0]      |        10 | ['heat the oven to 350f and arrange the rack in the middle', 'line an 8-by-8-inch glass baking dish ... | these are the most; chocolatey, moist, rich, dense, fudgy, delicious brownies that you'll ever make.... | ['bittersweet chocolate', 'unsalted butter', 'eggs', 'granulated sugar', 'unsweetened cocoa powder',... |               9 |                4 |
-| 1 in canada chocolate chip cookies   | 453467 |        45 |          1848091 | 2011-04-11  | ['60-minutes-or-less', 'time-to-make', 'cuisine', 'preparation', 'north-american', 'for-large-groups... | [595.1, 46.0, 211.0, 22.0, 13.0, 51.0, 26.0]  |        12 | ['pre-heat oven the 350 degrees f', 'in a mixing bowl , sift together the flours and baking powder',... | this is the recipe that we use at my school cafeteria for chocolate chip cookies. they must be the b... | ['white sugar', 'brown sugar', 'salt', 'margarine', 'eggs', 'vanilla', 'water', 'all-purpose flour',... |              11 |                5 |
-| 412 broccoli casserole               | 306168 |        40 |            50969 | 2008-05-30  | ['60-minutes-or-less', 'time-to-make', 'course', 'main-ingredient', 'preparation', 'side-dishes', 'v... | [194.8, 20.0, 6.0, 32.0, 22.0, 36.0, 3.0]     |         6 | ['preheat oven to 350 degrees', 'spray a 2 quart baking dish with cooking spray , set aside', 'in a ... | since there are already 411 recipes for broccoli casserole posted to "zaar" ,i decided to call this ... | ['frozen broccoli cuts', 'cream of chicken soup', 'sharp cheddar cheese', 'garlic powder', 'ground b... |               9 |                5 |
-| millionaire pound cake               | 286009 |       120 |           461724 | 2008-02-12  | ['time-to-make', 'course', 'cuisine', 'preparation', 'occasion', 'north-american', 'desserts', 'amer... | [878.3, 63.0, 326.0, 13.0, 20.0, 123.0, 39.0] |         7 | ['freheat the oven to 300 degrees', 'grease a 10-inch tube pan with butter , dust the bottom and sid... | why a millionaire pound cake?  because it's super rich!  this scrumptious cake is the pride of an el... | ['butter', 'sugar', 'eggs', 'all-purpose flour', 'whole milk', 'pure vanilla extract', 'almond extra... |               7 |                5 |
-| 2000 meatloaf                        | 475785 |        90 |          2202916 | 2012-03-06  | ['time-to-make', 'course', 'main-ingredient', 'preparation', 'main-dish', 'potatoes', 'vegetables', ... | [267.0, 30.0, 12.0, 12.0, 29.0, 48.0, 2.0]    |        17 | ['pan fry bacon , and set aside on a paper towel to absorb excess grease', 'mince yellow onion , red... | ready, set, cook! special edition contest entry: a mediterranean flavor inspired meatloaf dish. feat... | ['meatloaf mixture', 'unsmoked bacon', 'goat cheese', 'unsalted butter', 'eggs', 'baby spinach', 'ye... |              13 |                5 |
+Process: The nutrition column was processed using string functions to extract the values for calories, percent daily fat, sugar, and more.
+
+Rationale: These values are going to be used in further stages of analysis, so it is required that they are in their own columns and processed into numerical values.
+
+Impact: This helped turn the nutrition column into appropriate columns for regression tasks.
+
+Here are the first five rows of the dataset post-cleaning. Some values have been truncated to adhere to proper formatting:
+
+| name                                                |     id |   minutes |   contributor_id | submitted   | tags                                                       | nutrition                                     |   n_steps | steps                                                 | description                                                       | ingredients                                                    |   n_ingredients |   average_rating |   calories |   total_fat_pdv |   sugar_pdv |   sodium_pdv |   protein_pdv |   saturated_fat_pdv |   carbohydrates_pdv | cooking_time_range   |   avg_ingredients_per_step |   log_n_steps |   interaction |   log_minutes |
+|:-------------------------------------|-------:|----------:|-----------------:|:------------|:------------------------------------------------------|:----------------------------------------------|----------:|:------------------------------------------------------|:------------------------------------------------------|:------------------------------------------------------|----------------:|-----------------:|-----------:|----------------:|------------:|-------------:|--------------:|--------------------:|--------------------:|:---------------------|---------------------------:|--------------:|--------------:|--------------:|
+| 1 brownies in the world    best ever | 333281 |        40 |           985201 | 2008-10-27  | ['60-minutes-or-less', 'time-to-make', 'course', '... | [138.4, 10.0, 50.0, 3.0, 3.0, 19.0, 6.0]      |        10 | ['heat the oven to 350f and arrange the rack in th... | these are the most; chocolatey, moist, rich, dense... | ['bittersweet chocolate', 'unsalted butter', 'eggs... |               9 |                4 |      138.4 |              10 |          50 |            3 |             3 |                  19 |                   6 | 30-60 min            |                   0.9      |       2.3979  |            90 |       3.71357 |
+| 1 in canada chocolate chip cookies   | 453467 |        45 |          1848091 | 2011-04-11  | ['60-minutes-or-less', 'time-to-make', 'cuisine', ... | [595.1, 46.0, 211.0, 22.0, 13.0, 51.0, 26.0]  |        12 | ['pre-heat oven the 350 degrees f', 'in a mixing b... | this is the recipe that we use at my school cafete... | ['white sugar', 'brown sugar', 'salt', 'margarine'... |              11 |                5 |      595.1 |              46 |         211 |           22 |            13 |                  51 |                  26 | 30-60 min            |                   0.916667 |       2.56495 |           132 |       3.82864 |
+| 412 broccoli casserole               | 306168 |        40 |            50969 | 2008-05-30  | ['60-minutes-or-less', 'time-to-make', 'course', '... | [194.8, 20.0, 6.0, 32.0, 22.0, 36.0, 3.0]     |         6 | ['preheat oven to 350 degrees', 'spray a 2 quart b... | since there are already 411 recipes for broccoli c... | ['frozen broccoli cuts', 'cream of chicken soup', ... |               9 |                5 |      194.8 |              20 |           6 |           32 |            22 |                  36 |                   3 | 30-60 min            |                   1.5      |       1.94591 |            54 |       3.71357 |
+| millionaire pound cake               | 286009 |       120 |           461724 | 2008-02-12  | ['time-to-make', 'course', 'cuisine', 'preparation... | [878.3, 63.0, 326.0, 13.0, 20.0, 123.0, 39.0] |         7 | ['freheat the oven to 300 degrees', 'grease a 10-i... | why a millionaire pound cake?  because it's super ... | ['butter', 'sugar', 'eggs', 'all-purpose flour', '... |               7 |                5 |      878.3 |              63 |         326 |           13 |            20 |                 123 |                  39 | 1-2 hrs              |                   1        |       2.07944 |            49 |       4.79579 |
+| 2000 meatloaf                        | 475785 |        90 |          2202916 | 2012-03-06  | ['time-to-make', 'course', 'main-ingredient', 'pre... | [267.0, 30.0, 12.0, 12.0, 29.0, 48.0, 2.0]    |        17 | ['pan fry bacon , and set aside on a paper towel t... | ready, set, cook! special edition contest entry: a... | ['meatloaf mixture', 'unsmoked bacon', 'goat chees... |              13 |                5 |      267   |              30 |          12 |           12 |            29 |                  48 |                   2 | 1-2 hrs              |                   0.764706 |       2.89037 |           221 |       4.51086 |
 
 Below is a histogram of cooking times. The histogram visualizes the distribution of cooking times for recipes in the dataset. Most recipes have short cooking times, with the majority falling under 100 minutes, suggesting that users prefer recipes with faster preparation times. This trend indicates that future analysis should focus on how average ratings vary within this dominant range to explore the relationship between cooking time and user satisfaction.
 
@@ -142,11 +139,9 @@ A high R² value indicates a good fit, meaning the model accurately predicts coo
 
 Why Not Other Metrics?
 Mean Squared Error (MSE):
-While MSE is useful to measure error magnitude, it is not intuitive for interpreting model performance since it is sensitive to scale.
+While MSE is useful to measure error magnitude, it is not as intuitive as R² for interpreting model performance.
 Mean Absolute Error (MAE):
 MAE measures average prediction error, but it does not provide insight into how well the model captures variance in the target variable.
-Adjusted R²:
-Adjusted R² accounts for the number of predictors but is more relevant when adding numerous features. With a smaller feature set, standard R² suffices.
 
 Selected Features
 Number of Steps (n_steps):
