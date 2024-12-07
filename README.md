@@ -217,6 +217,7 @@ These features were chosen based on their relevance to the cooking process and t
 **Tranformers and Scalers**
 
 QuantileTransformer for calories and sugar_pdv: The best quantile range was selected based on its ability to make the distributions closer to uniform.
+
 StandardScaler for the interaction term: Ensures the interaction term is scaled appropriately alongside other features.
 
 **Modeling Algorithm and Hyperparameters**
@@ -240,11 +241,13 @@ For the final model, GridSearchCV systematically explored combinations of hyperp
 
 Explanation of Each Parameter
 n_estimators:
+
 Definition: This controls the number of decision trees in the Random Forest.
 Values Tried: [50, 100, 200].
 Reason for Selection: Increasing the number of trees generally improves model performance by reducing variance, but at the cost of increased computation time. Testing a range of values helps find the trade-off between performance and efficiency.
 
 max_depth:
+
 Definition: This sets the maximum depth of each decision tree.
 Values Tried: [5, 10, 20, None].
 Reason for Selection: Limiting tree depth helps prevent overfitting by restricting how complex the trees can become. A smaller depth ensures the trees capture the general trends in the data, while deeper trees allow the model to capture finer details. The None option allows trees to grow until they are fully expanded.
