@@ -84,7 +84,7 @@ Rationale: These values are going to be used in further stages of analysis, so i
 
 Impact: This helped turn the nutrition column into appropriate columns for regression tasks.
 
-Here are the first five rows of the dataset post-cleaning. Some values have been truncated to adhere to proper formatting:
+Here are the first five rows of the dataset post-cleaning (scroll to see all columns). Some values have been truncated to adhere to proper formatting:
 
 <style type="text/css">
   table
