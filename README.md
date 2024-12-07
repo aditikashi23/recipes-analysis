@@ -16,7 +16,7 @@ This question is relevant to both recipe creators and home cooks. For creators, 
 
 There are 82909 rows and 13 columns in this dataset, after merging the recipes and review datasets together. 
 
-The column and descriptions for the relevant columns of the recipes dataset are as follows:
+The column and descriptions for the relevant columns of the recipes dataset are as follows (scroll to see all columns):
 
 
 | Column     |   Description |
@@ -84,7 +84,9 @@ Rationale: These values are going to be used in further stages of analysis, so i
 
 Impact: This helped turn the nutrition column into appropriate columns for regression tasks.
 
-Here are the first five rows of the dataset post-cleaning (scroll to see all columns). Some values have been truncated to adhere to proper formatting:
+**Here are the first five rows of the dataset post-cleaning (scroll to see all columns).**
+
+Some values have been truncated to adhere to proper formatting:
 
 <style type="text/css">
   table
@@ -140,23 +142,29 @@ Below is a grouped table of cooking time and average rating. This is helpful to 
 The prediction problem is a regression task, where the goal is to predict the cooking time (minutes) for a recipe based on other numerical features, such as the number of steps and the number of ingredients. Regression is appropriate because the response variable is continuous, representing time in minutes.
 
 **Response Variable: minutes**
+
 Reason for Choosing It: Cooking time is a critical aspect of a recipe, influencing its practicality and appeal. Predicting it based on recipe complexity and ingredients can offer valuable insights to home cooks or recipe platforms.
 
 **Chosen Metric: R² (Coefficient of Determination)**
-Reason: R² evaluates how well the independent variables (features) explain the variance in the dependent variable (response). This makes it ideal for regression tasks where the aim is to maximize the proportion of variance explained by the model.
-A high R² value indicates a good fit, meaning the model accurately predicts cooking time for a range of recipes.
+
+Reason: R² evaluates how well the independent variables (features) explain the variance in the dependent variable (response). This makes it ideal for regression tasks where the aim is to maximize the proportion of variance explained by the model. A high R² value indicates a good fit, meaning the model accurately predicts cooking time for a range of recipes.
 
 **Why Not Other Metrics?**
+
 Mean Squared Error (MSE):
 While MSE is useful to measure error magnitude, it is not as intuitive as R² for interpreting model performance.
+
 Mean Absolute Error (MAE):
 MAE measures average prediction error, but it does not provide insight into how well the model captures variance in the target variable.
 
 **Selected Features**
+
 Number of Steps (n_steps):
 Why It's Known: The number of steps is part of the recipe design, which is available before cooking starts. It does not depend on the outcome or performance of the recipe and is static information available during recipe submission or retrieval.
+
 Number of Ingredients (n_ingredients):
 Why It's Known: The ingredient count is derived from the recipe's ingredient list, which is also finalized and available before cooking begins. This information is inherently part of the recipe structure.
+
 Various Nutrition Facts (calories, sugar_pdv, total_fat_pdv, carbohydrates_pdv, protein_pdv):
 Why It's Known: These facts can be calculated through the ingredients of any recipe, which is known.
 
@@ -239,7 +247,6 @@ Random forests are less sensitive to outliers compared to linear regression. Thi
 
 For the final model, GridSearchCV systematically explored combinations of hyperparameters that are crucial for tuning the Random Forest Regressor.
 
-Explanation of Each Parameter
 n_estimators:
 
 Definition: This controls the number of decision trees in the Random Forest.
@@ -258,6 +265,7 @@ The best parameters were n_estimators = 200 and max_depth = 10.
 **Final Model Performance**
 
 **Training R² Score: 0.4056**
+
 **Test R² Score: 0.3256**
 
 The final model showed a significant improvement in both training and testing, indicating that the engineered features and transformations allowed the model to better explain the variance in the data.
