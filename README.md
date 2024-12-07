@@ -1,4 +1,4 @@
-# Hold On, Let Me Cook: An Analysis of a Recipes and Ratings Dataset
+# Hold On, Let Me Cook: Wait, How Long Will This Recipe Take?
 
 by Aditi Kashi (adikashi@umich.edu) and Anish Kudupudi (kudupudi@umich.edu)
 
