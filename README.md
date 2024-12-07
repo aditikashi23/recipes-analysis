@@ -1,6 +1,6 @@
-# Recipes and Ratings
+# Hold On, Let Me Cook: An Analysis of a Recipes and Ratings Dataset
 
-by Aditi Kashi and Anish Kudupudi
+by Aditi Kashi (adikashi@umich.edu) and Anish Kudupudi (kudupudi@umich.edu)
 
 ---
 
