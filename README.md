@@ -84,6 +84,10 @@ Rationale: These values are going to be used in further stages of analysis, so i
 
 Impact: This helped turn the nutrition column into appropriate columns for regression tasks.
 
+**Comment on Imputation**
+
+Since we replaced all ratings of 0 with NaN and didn't require any other imputation for our other columns, we did not use any imputation strategies.
+
 **Here are the first five rows of the dataset post-cleaning (scroll to see all columns).**
 
 Some values have been truncated to adhere to proper formatting:
