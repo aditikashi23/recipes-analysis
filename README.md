@@ -89,9 +89,9 @@ Here are the first five rows of the dataset post-cleaning. Some values have been
 <style type="text/css">
   table
   {
-        word-wrap: normal;
+    display: block;
     overflow-x: auto;
-    white-space: pre;
+    white-space: nowrap;
   }
 </style>
 
