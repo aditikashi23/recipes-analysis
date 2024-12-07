@@ -25,7 +25,7 @@ The column and descriptions for the relevant columns of the recipes dataset are 
 | nutrition |       Nutrition information in the form [calories (#), total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat (PDV), carbohydrates (PDV)]; PDV stands for “percentage of daily value” |
 | n_steps |       Number of steps in recipe |
 
-The column and descriptions for the reviews dataset are as follows:
+The relevant columns and descriptions for the reviews dataset are as follows:
 
 | Column     |   Description |
 |:------------|--------:|
@@ -208,7 +208,7 @@ The baseline model is a **Linear Regression** model implemented using the `Linea
 
 ### **Evaluation of Model Quality**
 - **Is the Model "Good"?**
-  - No, the current model is not good. A low R² score suggests that the model fails to explain the variability in the cooking time (`minutes`). This implies that `n_steps` and `n_ingredients` alone are insufficient to predict the target variable effectively.
+  - No, the current model is not good. A low R² score suggests that the model fails to explain the variability in the cooking time (`minutes`). This implies that there may not be a linear relationship or better variables should be chosen.
 
 
 ---
@@ -223,8 +223,7 @@ Interaction Term (n_steps * n_ingredients):
 This feature captures the interplay between the number of steps and the number of ingredients in a recipe. It is logical to assume that recipes with a high number of steps and ingredients are more complex and, consequently, might take longer to prepare. Adding this interaction term allows the model to account for such combined effects that the baseline model missed.
 
 Log Transformation of the Target (minutes):
-The target variable minutes was log-transformed to handle the positive skew in the data distribution. Many recipes likely have short cooking times, with fewer instances of recipes taking significantly longer, creating a right-skewed distribution. By applying the log transformation, we make the data more normally distributed, which is favorable for linear regression models that assume residuals are normally distributed. This transformation also helps reduce the influence of outliers on model performance.
-These features were chosen based on their relevance to the cooking process and their ability to better represent the underlying data-generating process, rather than through trial-and-error improvements to performance.
+The target variable minutes was log-transformed to handle the positive skew in the data distribution. Many recipes likely have short cooking times, with fewer instances of recipes taking significantly longer, creating a right-skewed distribution. By applying the log transformation, we make the data more normally distributed. Even though random forest classifiers do not assume normality of data, we originally made this change to a linear regression model and noticed slight improvement, so we decided to keep it in because this transformation also helps reduce the influence of outliers on model performance.
 
 **Tranformers and Scalers**
 
@@ -244,9 +243,6 @@ Random forests are non-parametric models that can capture complex, nonlinear rel
 Feature Importance Analysis:
 Random forests naturally rank the importance of features. This helped assess whether the engineered features, like the interaction term (n_steps * n_ingredients), were meaningful contributors to the model's predictions. This insight was useful for both the random forest model and to inform future iterations of feature selection for the linear regression model.
 
-Robustness to Outliers:
-Random forests are less sensitive to outliers compared to linear regression. This made it a good candidate for exploring whether the outliers in minutes (e.g., recipes with extremely long cooking times) were disproportionately affecting model performance.
-
 **GridSearchCV**
 
 For the final model, GridSearchCV systematically explored combinations of hyperparameters that are crucial for tuning the Random Forest Regressor.
@@ -262,6 +258,7 @@ max_depth:
 Definition: This sets the maximum depth of each decision tree.
 Values Tried: [5, 10, 20, None].
 Reason for Selection: Limiting tree depth helps prevent overfitting by restricting how complex the trees can become. A smaller depth ensures the trees capture the general trends in the data, while deeper trees allow the model to capture finer details. The None option allows trees to grow until they are fully expanded.
+
 Grid Search Process
 
 The best parameters were n_estimators = 200 and max_depth = 10.
@@ -273,17 +270,5 @@ The best parameters were n_estimators = 200 and max_depth = 10.
 **Test R² Score: 0.3256**
 
 The final model showed a significant improvement in both training and testing, indicating that the engineered features and transformations allowed the model to better explain the variance in the data.
-
-**Why the Final Model Improved**
-
-The improved performance can be attributed to:
-
-Feature Engineering: The interaction term allowed the model to capture nuanced relationships between the number of steps and ingredients, which are jointly correlated with cooking time. The log transformation stabilized the variance in the target variable, improving prediction accuracy.
-
-Data Transformation: Using QuantileTransformer and StandardScaler ensured the numerical features were on comparable scales, improving the stability of the linear regression model.
-Hyperparameter Tuning: GridSearchCV helped identify optimal parameters for transformations, ensuring each feature contributed effectively to the model.
-
-Overall, the final model's performance improvement demonstrates the importance of feature engineering and data transformations in addressing the limitations of a basic linear regression model when applied to complex datasets like recipe preparation times.
-
 
 ---
