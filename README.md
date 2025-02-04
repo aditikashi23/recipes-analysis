@@ -1,6 +1,6 @@
 # Hold On, Let Me Cook: Wait, How Long Will This Recipe Take?
 
-by Aditi Kashi (adikashi@umich.edu) and Anish Kudupudi (kudupudi@umich.edu)
+by Aditi Kashi (adikashi@umich.edu)
 
 ---
 
