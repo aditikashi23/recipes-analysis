@@ -1,4 +1,4 @@
-# Hold On, Let Me Cook: Wait, How Long Will This Recipe Take?
+# How Long Will This Recipe Take?
 
 by Aditi Kashi (adikashi@umich.edu)
 
