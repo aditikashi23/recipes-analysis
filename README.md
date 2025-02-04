@@ -4,6 +4,8 @@ by Aditi Kashi (adikashi@umich.edu)
 
 ---
 
+Website Link: https://aditikashi23.github.io/recipes-analysis/
+
 ## Introduction
 
 The dataset analyzed comes from Food.com, a platform where users share recipes and rate their cooking experiences. It consists of two components: **recipes** and **user interactions**. The recipes dataset details attributes such as cooking time, nutritional values, and step-by-step instructions. The interactions dataset captures user reviews and ratings for these recipes.
